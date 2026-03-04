@@ -141,6 +141,20 @@ Output Gate
 
 Each of these is a small neural network.
 
+LSTM produces BOTH:
+
+out, (ht, ct) = lstm(x)
+
+But for prediction:
+
+prediction = linear(ht)  # ← Uses HIDDEN STATE.
+
+Not linear(ct)
+
+Why? Because ht is the WORKING MEMORY
+
+It contains relevant info from ct + recent context
+
 ![alt text](image-7.png)
 
 
