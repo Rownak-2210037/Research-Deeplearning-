@@ -164,5 +164,10 @@ https://www.geeksforgeeks.org/deep-learning/deep-learning-introduction-to-long-s
 
 
 
+### How lstm solve vanishing problem?
+
+![alt text](image-11.png)
+
+![alt text](image-12.png)
 
 
