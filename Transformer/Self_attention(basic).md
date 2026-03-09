@@ -527,6 +527,93 @@ Now matching becomes much clearer.
 
 Transformers separate asking (Query) from describing (Key) and providing information (Value), which makes learning relationships between words much easier than using one embedding for everything.
 
+### summary:
+
+![alt text](image-3.png)
+
+![alt text](image-4.png)
+
+Finally we got now  Attention(Q,K,V)=Softmax(Q.K(trans)).V
+
+## 1.5 Why we scaled by (1/root(d)) to the Attention(Q,K,V)?
+
+In self-attention, we compute the similarity between Query (Q) and Key (K) using a dot product.
+
+Score:
+
+Q · K
+
+If the vector dimension **d** is large, the dot product becomes **very large** because it sums many numbers.
+
+Example:
+
+If d = 4
+
+Q · K = q1k1 + q2k2 + q3k3 + q4k4
+
+If d = 512
+Q · K = sum of 512 terms → the value can become very large.
+
+**Problem:**
+
+Large values cause problems in the **softmax** function.
+
+Softmax of very large numbers becomes extremely sharp:
+
+softmax([100, 2, 1]) ≈ [1, 0, 0]
+
+This makes the model focus on only one word and ignore others.thus,at the time of back propagartion gradient of some word become near 0.
+
+It also makes gradients very small, which slows learning.
+
+**Solution**
+
+To prevent large scores, we scale the dot product by:
+
+1 / √d
+
+So the attention formula becomes:
+
+Attention(Q, K, V) = softmax((QKᵀ) / √d) V
+
+**Intuition**
+
+As vector dimension increases, the **variance of the dot product increases**.  
+Dividing by √d keeps the values **stable and well-behaved for softmax**.
+
+Scaling by **1/√d** keeps attention scores in a reasonable range, making training more stable and preventing softmax from becoming too extreme.
+
+
+![alt text](image-5.png)
+
+![alt text](image-6.png)
+
+**geometric intuition** --> notepad
+
+
+## 1.6 Why is it called Self-Attention?
+
+It is called **self-attention** because each word in a sentence attends to **other words in the same sentence** to understand its meaning.
+
+In other words, the model uses the sentence itself to compute attention.
+
+Example sentence:
+
+The animal didn't cross the street because it was tired.
+
+To understand **"it"**, the model looks at other words in the same sentence:
+
+- animal
+  
+- street
+  
+- tired
+
+The word **"it" attends to "animal"** to determine its meaning.
+
+So the attention is computed **within the same sequence**, not between different sequences.
+
+Self-attention means **each token looks at all other tokens in the same input to build a contextual representation**.
 
 
 
