@@ -615,6 +615,121 @@ So the attention is computed **within the same sequence**, not between different
 
 Self-attention means **each token looks at all other tokens in the same input to build a contextual representation**.
 
+## 1.7 Does Self-Attention Process the Whole Dataset at Once?
+
+No. Self-attention does not process the entire dataset together.
+
+It works at two levels:
+
+1. **Inside a Sequence (Sentence)**
+2. **Across Multiple Sequences in a Batch**
+
+1. Self-Attention Inside One Sequence
+
+Self-attention computes relationships between **all words in the same sequence**.
+
+Example sentence:
+
+I love deep learning
+
+The word "love" attends to:
+
+- I
+  
+- love
+  
+- deep
+  
+- learning
+
+So attention is computed between **every pair of words in the sentence**.
+
+If a sentence has **n words**, attention computes an **n × n matrix**.
+
+Example:
+
+4 words → 4 × 4 attention matrix.
+
+2. Parallel Processing with Batches
+
+During training, models usually process **multiple sentences together** using batching.
+
+Example batch:
+
+Sentence 1: I love NLP  
+Sentence 2: Transformers are powerful  
+Sentence 3: Deep learning works well  
+
+The model processes these **3 sequences at the same time**, but **attention is computed separately inside each sentence**.
+
+So the attention does **not mix words from different sentences**.
+
+Self-attention looks at **all words in the same sequence simultaneously**, while modern hardware (GPUs) allows **many sequences to be processed in parallel using batches**.
+
+The output stores the result of applying attention, not the attention itself. It's like:
+
+Attention weights = Recipe (70% flour, 20% sugar, 10% eggs)
+
+Output = Cake (you can't see the individual ingredients)
 
 
+
+## 2.Multi-Head Attention
+
+Multi-head attention is an extension of **self-attention** used in the Transformer model.
+
+Instead of computing attention **once**, the model computes attention **multiple times in parallel** using different learned projections. Each attention operation is called a **head**.
+
+#### 2.1 Why Multi-Head Attention?
+
+A single attention mechanism may focus on only **one type of relationship** between words.
+
+Multi-head attention allows the model to capture **different relationships at the same time**.
+
+Example sentence:
+
+The animal didn't cross the street because it was too tired.
+
+Different heads may focus on different patterns:
+
+- Head 1 → grammatical relation  
+  
+- Head 2 → subject reference ("it" → "animal")  
+  
+- Head 3 → semantic meaning
+
+This helps the model understand the sentence more deeply.
+
+
+#### 2.2 How It Works?
+
+1. The input embeddings are projected into multiple **Query, Key, Value** sets.
+
+2. Each head performs **self-attention independently**:
+
+Attention(Q, K, V)
+
+3. The outputs of all heads are **concatenated**.
+
+4. A final linear layer combines them into the final representation.
+
+**Why multiple heads?**: Each head captures different relationships (subject, object, time, etc.)
+
+**Why concatenate?**: To preserve all the different insights from each head without losing information.
+
+**Why linear layer?**: To learn the optimal way to blend these insights into a single rich representation.
+
+Simple example (2 heads, 2-dim embeddings):
+
+Head 1 output for "cat": [0.8, 0.2] (subject focus)
+
+Head 2 output for "cat": [0.4, 0.6] (article focus)
+
+Concatenate: [0.8, 0.2, 0.4, 0.6]
+
+Linear layer blends: [0.7, 0.3] (final enriched vector)
+
+Multi-head attention allows the model to look at **different parts of the sentence and different types of relationships simultaneously**, improving the representation of each word.
+
+![alt text](image-7.png)
 
