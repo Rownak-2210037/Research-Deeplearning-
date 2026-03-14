@@ -74,4 +74,6 @@ The process of generating outputs (e.g., predicting the next token) during model
 
 ![alt text](image.png)
 
+![alt text](image-12.png)
+
 
