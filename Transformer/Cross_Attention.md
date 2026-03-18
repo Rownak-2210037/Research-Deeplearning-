@@ -246,19 +246,29 @@ Most likely next word: "hain" (are)
 Visual Summary
 
 Decoder: "Hum" (Query = [0.7,0.3,0.6])
+
               ↓
+
     ┌─────────────────────┐
     │  CROSS ATTENTION    │
     └─────────────────────┘
+
          ↓         ↓         ↓
+
     "We"        "are"     "friends"
+
   [0.8,0.1,0.5] [0.3,0.9,0.2] [0.4,0.2,0.9]
+
       ↑           ↑           ↑
+
     0.36         0.27        0.37
-      └───────────┼───────────┘
+      
                   ↓
+
         Context = [0.52, 0.35, 0.57]
+
                   ↓
+
         Next word = "hain" (are)
 
 ### Difference between Cross and Self attention
