@@ -33,7 +33,7 @@ Key,value- from Encoder output
 
 Example:
 
-English sentence (input):
+English sentence (input)
 
 We are friends
 
